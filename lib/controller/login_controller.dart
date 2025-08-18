@@ -19,7 +19,13 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
 
   // مفتاح النموذج
-  final formKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> formKey;
+
+  @override
+  void onInit() {
+    super.onInit();
+    formKey = GlobalKey<FormState>();
+  }
 
   @override
   void onClose() {
@@ -43,57 +49,57 @@ class LoginController extends GetxController {
   }
 
   // ✅ تسجيل الدخول مع ربط بالباك
-Future<void> login() async {
-  if (!formKey.currentState!.validate()) {
-    showSnackbarError("يرجى التأكد من إدخال البريد وكلمة المرور بشكل صحيح");
-    return;
-  }
-
-  isLoading.value = true;
-
-  try {
-    // القيم المرسلة
-    final body = {
-      "email": emailController.text.trim(),
-      "password": passwordController.text.trim(),
-    };
-
-    print("📤 البيانات المرسلة للسيرفر:");
-    print(body);
-
-    final response = await http.post(
-      Uri.parse(linkLogin),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: jsonEncode(body),
-    );
-
-    print("Response status: ${response.statusCode}");
-    print("Response body: ${response.body}");
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString("id", data['id'].toString());
-
-      Get.offAllNamed("/home");
-      print("✅ تسجيل الدخول تم بنجاح");
-    } else {
-      final error = jsonDecode(response.body)['detail'] ??
-          "الإيميل أو كلمة المرور غير صحيحة أو الحساب غير موجود.";
-      showDialogError(error);
-      print("❌ فشل تسجيل الدخول");
+  Future<void> login() async {
+    if (!formKey.currentState!.validate()) {
+      showSnackbarError("يرجى التأكد من إدخال البريد وكلمة المرور بشكل صحيح");
+      return;
     }
-  } catch (e) {
-    showDialogError("حدث خطأ أثناء الاتصال بالخادم. يرجى المحاولة لاحقًا.");
-    print("❌ Exception: $e");
-  } finally {
-    isLoading.value = false;
-  }
-}
 
+    isLoading.value = true;
+
+    try {
+      // القيم المرسلة
+      final body = {
+        "email": emailController.text.trim(),
+        "password": passwordController.text.trim(),
+      };
+
+      print("📤 البيانات المرسلة للسيرفر:");
+      print(body);
+
+      final response = await http.post(
+        Uri.parse(linkLogin),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(body),
+      );
+
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString("id", data['id'].toString());
+
+        Get.offAllNamed("/home");
+        print("✅ تسجيل الدخول تم بنجاح");
+      } else {
+        final error =
+            jsonDecode(response.body)['detail'] ??
+            "الإيميل أو كلمة المرور غير صحيحة أو الحساب غير موجود.";
+        showDialogError(error);
+        print("❌ فشل تسجيل الدخول");
+      }
+    } catch (e) {
+      showDialogError("حدث خطأ أثناء الاتصال بالخادم. يرجى المحاولة لاحقًا.");
+      print("❌ Exception: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   // ✅ نافذة حوار لعرض الخطأ
   void showDialogError(String message) {
@@ -102,10 +108,7 @@ Future<void> login() async {
         title: const Text("تنبيه", style: TextStyle(color: Colors.redAccent)),
         content: Text(message),
         actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text("موافق"),
-          ),
+          TextButton(onPressed: () => Get.back(), child: const Text("موافق")),
         ],
       ),
       barrierDismissible: false,

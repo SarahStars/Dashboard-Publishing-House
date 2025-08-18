@@ -15,9 +15,19 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreen extends State<RegisterScreen> {
   var isLoading = false.obs;
 
-  final controller = Get.put(RegisterController());
+  @override
+  void initState() {
+    super.initState();
+    // Ensure fresh controller instance
+    Get.delete<RegisterController>();
+  }
 
-  Future<void> _pickImage(TextEditingController textController, Rx<Uint8List?> imageBytesRx) async {
+  RegisterController get controller => Get.put(RegisterController());
+
+  Future<void> _pickImage(
+    TextEditingController textController,
+    Rx<Uint8List?> imageBytesRx,
+  ) async {
     final data = await ImagePickerWeb.getImageAsBytes();
     if (data != null) {
       imageBytesRx.value = data;
@@ -38,31 +48,98 @@ class _RegisterScreen extends State<RegisterScreen> {
               Expanded(
                 flex: 5,
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 30),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 60,
+                    vertical: 30,
+                  ),
                   child: Form(
                     key: controller.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text('إنشاء حساب', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const Text(
+                          'إنشاء حساب',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textDirection: TextDirection.rtl,
+                        ),
                         const SizedBox(height: 24),
-                        _buildTextField('اسم دار النشر', controller.nameController, (val) => validInput(val!, 3, 50)),
-                        _buildTextField('الإيميل', controller.emailController, (val) => validInput(val!, 5, 50, type: 'email')),
-                        _buildImagePickerField(label: 'ترخيص وزارة الإعلام', controller: controller.licenseController, imageBytesRx: controller.licenseImageBytes),
-                        Obx(() => controller.licenseError.value.isNotEmpty
-                            ? Text(controller.licenseError.value, style: TextStyle(color: Colors.red, fontSize: 12))
-                            : SizedBox()),
-                        _buildImagePickerField(label: 'الشعار', controller: controller.logoController, imageBytesRx: controller.logoImageBytes),
-                        Obx(() => controller.logoError.value.isNotEmpty
-                            ? Text(controller.logoError.value, style: TextStyle(color: Colors.red, fontSize: 12))
-                            : SizedBox()),
-                        Obx(() => _buildPasswordField('كلمة المرور', controller.passwordController, controller.showPassword.value, controller.togglePasswordVisibility, (val) => validInput(val!, 8, 100))),
-                        Obx(() => _buildPasswordField('تأكيد كلمة المرور', controller.confirmPasswordController, controller.showConfirmPassword.value, controller.toggleConfirmPasswordVisibility, (val) => val != controller.passwordController.text ? 'كلمة المرور غير متطابقة' : null)),
+                        _buildTextField(
+                          'اسم دار النشر',
+                          controller.nameController,
+                          (val) => validInput(val!, 3, 50),
+                        ),
+                        _buildTextField(
+                          'الإيميل',
+                          controller.emailController,
+                          (val) => validInput(val!, 5, 50, type: 'email'),
+                        ),
+                        _buildImagePickerField(
+                          label: 'ترخيص وزارة الإعلام',
+                          controller: controller.licenseController,
+                          imageBytesRx: controller.licenseImageBytes,
+                        ),
+                        Obx(
+                          () =>
+                              controller.licenseError.value.isNotEmpty
+                                  ? Text(
+                                    controller.licenseError.value,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                  )
+                                  : SizedBox(),
+                        ),
+                        _buildImagePickerField(
+                          label: 'الشعار',
+                          controller: controller.logoController,
+                          imageBytesRx: controller.logoImageBytes,
+                        ),
+                        Obx(
+                          () =>
+                              controller.logoError.value.isNotEmpty
+                                  ? Text(
+                                    controller.logoError.value,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                  )
+                                  : SizedBox(),
+                        ),
+                        Obx(
+                          () => _buildPasswordField(
+                            'كلمة المرور',
+                            controller.passwordController,
+                            controller.showPassword.value,
+                            controller.togglePasswordVisibility,
+                            (val) => validInput(val!, 8, 100),
+                          ),
+                        ),
+                        Obx(
+                          () => _buildPasswordField(
+                            'تأكيد كلمة المرور',
+                            controller.confirmPasswordController,
+                            controller.showConfirmPassword.value,
+                            controller.toggleConfirmPasswordVisibility,
+                            (val) =>
+                                val != controller.passwordController.text
+                                    ? 'كلمة المرور غير متطابقة'
+                                    : null,
+                          ),
+                        ),
                         const SizedBox(height: 12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: const [
-                            Text('أوافق على شروط سياسة الخصوصية', textDirection: TextDirection.rtl, style: TextStyle(fontSize: 12)),
+                            Text(
+                              'أوافق على شروط سياسة الخصوصية',
+                              textDirection: TextDirection.rtl,
+                              style: TextStyle(fontSize: 12),
+                            ),
                             SizedBox(width: 8),
                             Checkbox(value: true, onChanged: null),
                           ],
@@ -73,25 +150,33 @@ class _RegisterScreen extends State<RegisterScreen> {
                           height: 42,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1D2A45),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                              backgroundColor: const Color(0xFF1D2A45),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
                             onPressed: () async {
                               print('Register clicked');
                               controller.register();
                             },
                             child: Obx(() {
-  return controller.isLoading.value 
-      ? const SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Colors.white,
-          ),
-        )
-      : const Text('إنشاء حساب', style: TextStyle(fontSize: 15, color: Colors.white));
-}),
-
+                              return controller.isLoading.value
+                                  ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                  : const Text(
+                                    'إنشاء حساب',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                            }),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -101,11 +186,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                             child: const Text.rich(
                               TextSpan(
                                 text: 'لديك حساب بالفعل؟ ',
-                                style: TextStyle(color: Colors.black54, fontSize: 13),
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 13,
+                                ),
                                 children: [
                                   TextSpan(
                                     text: 'تسجيل دخول',
-                                    style: TextStyle(color: Color(0xFF1D2A45), fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                                    style: TextStyle(
+                                      color: Color(0xFF1D2A45),
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -122,7 +214,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                   flex: 5,
                   child: Container(
                     decoration: const BoxDecoration(
-                      image: DecorationImage(image: AssetImage('images/register_illustration.png'), fit: BoxFit.fill),
+                      image: DecorationImage(
+                        image: AssetImage('images/register_illustration.png'),
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
@@ -133,7 +228,12 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, String? Function(String?)? validator, {bool required = true}) {
+  Widget _buildTextField(
+    String label,
+    TextEditingController controller,
+    String? Function(String?)? validator, {
+    bool required = true,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -144,7 +244,15 @@ class _RegisterScreen extends State<RegisterScreen> {
             text: TextSpan(
               text: label,
               style: const TextStyle(color: Colors.black, fontSize: 13),
-              children: required ? [const TextSpan(text: ' *', style: TextStyle(color: Colors.red))] : [],
+              children:
+                  required
+                      ? [
+                        const TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ]
+                      : [],
             ),
           ),
           const SizedBox(height: 4),
@@ -155,9 +263,18 @@ class _RegisterScreen extends State<RegisterScreen> {
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xFFF1F1F1),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.blue)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.blue),
+              ),
             ),
           ),
         ],
@@ -181,7 +298,15 @@ class _RegisterScreen extends State<RegisterScreen> {
             text: TextSpan(
               text: label,
               style: const TextStyle(color: Colors.black, fontSize: 13),
-              children: required ? [const TextSpan(text: ' *', style: TextStyle(color: Colors.red))] : [],
+              children:
+                  required
+                      ? [
+                        const TextSpan(
+                          text: ' *',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ]
+                      : [],
             ),
           ),
           const SizedBox(height: 4),
@@ -196,9 +321,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                   filled: true,
                   fillColor: const Color(0xFFF1F1F1),
                   suffixIcon: Icon(Icons.image, color: Colors.grey.shade700),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.blue.shade900)),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blue.shade900),
+                  ),
                 ),
               ),
             ),
@@ -228,13 +362,23 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildPasswordField(String label, TextEditingController controller, bool obscure, VoidCallback toggleVisibility, String? Function(String?)? validator) {
+  Widget _buildPasswordField(
+    String label,
+    TextEditingController controller,
+    bool obscure,
+    VoidCallback toggleVisibility,
+    String? Function(String?)? validator,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text('$label *', textDirection: TextDirection.rtl, style: const TextStyle(fontSize: 13)),
+          Text(
+            '$label *',
+            textDirection: TextDirection.rtl,
+            style: const TextStyle(fontSize: 13),
+          ),
           const SizedBox(height: 4),
           Stack(
             alignment: Alignment.centerRight,
@@ -247,15 +391,27 @@ class _RegisterScreen extends State<RegisterScreen> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: const Color(0xFFF1F1F1),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.blue.shade900)),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide(color: Colors.blue.shade900),
+                  ),
                 ),
               ),
               Positioned(
                 left: 10,
                 child: IconButton(
-                  icon: Icon(obscure ? Icons.visibility_off : Icons.visibility, color: Colors.grey.shade700),
+                  icon: Icon(
+                    obscure ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey.shade700,
+                  ),
                   onPressed: toggleVisibility,
                 ),
               ),
