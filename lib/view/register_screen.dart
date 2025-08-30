@@ -5,24 +5,8 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:publishing_house/controller/register_controller.dart';
 import '../utils/validation.dart';
 
-class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
-
-  @override
-  _RegisterScreen createState() => _RegisterScreen();
-}
-
-class _RegisterScreen extends State<RegisterScreen> {
-  var isLoading = false.obs;
-
-  @override
-  void initState() {
-    super.initState();
-    // Ensure fresh controller instance
-    Get.delete<RegisterController>();
-  }
-
-  RegisterController get controller => Get.put(RegisterController());
+class RegisterScreen extends GetView<RegisterController> {
+  const RegisterScreen({super.key});
 
   Future<void> _pickImage(
     TextEditingController textController,
@@ -86,12 +70,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                               controller.licenseError.value.isNotEmpty
                                   ? Text(
                                     controller.licenseError.value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 12,
                                     ),
                                   )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                         ),
                         _buildImagePickerField(
                           label: 'الشعار',
@@ -103,12 +87,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                               controller.logoError.value.isNotEmpty
                                   ? Text(
                                     controller.logoError.value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.red,
                                       fontSize: 12,
                                     ),
                                   )
-                                  : SizedBox(),
+                                  : const SizedBox(),
                         ),
                         Obx(
                           () => _buildPasswordField(

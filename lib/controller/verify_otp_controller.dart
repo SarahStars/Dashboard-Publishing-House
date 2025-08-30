@@ -14,9 +14,11 @@ class VerifyOtpController extends GetxController {
     super.onInit();
     controllers = List.generate(codeLength, (_) => TextEditingController());
     focusNodes = List.generate(codeLength, (_) => FocusNode());
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      focusNodes[0].requestFocus();
-    });
+    @override
+  void onReady() {
+    super.onReady();
+    focusNodes[0].requestFocus();
+  }
   }
 
   @override

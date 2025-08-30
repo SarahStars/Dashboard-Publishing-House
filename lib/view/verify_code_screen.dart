@@ -3,13 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:publishing_house/controller/verify_otp_controller.dart';
 
-class VerifyCodeScreen extends StatelessWidget {
+class VerifyCodeScreen extends GetView<VerifyOtpController> {
   const VerifyCodeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(VerifyOtpController());
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

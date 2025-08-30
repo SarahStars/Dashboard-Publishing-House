@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:publishing_house/view/PublishABook.dart';
+import 'package:publishing_house/view/JobsPage.dart';
+import 'package:publishing_house/view/My_books.dart';
+//import 'package:publishing_house/view/PublishABook.dart';
 import 'package:publishing_house/view/PublishedBooksPage.dart';
+import 'package:publishing_house/view/PublishBookPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -114,10 +117,22 @@ class HomePage extends StatelessWidget {
                   Get.to(() => const PublishedBooksPage());
                 }),
                 _buildMenuItem(Icons.upload, 'نشر كتاب', onTap: () {
-                  Get.to(() => const PublishABook());
+                Get.to(() => const PublishBookPage());
                 }),
-                _buildMenuItem(Icons.work_outline, 'فرص العمل'),
+                _buildMenuItem(Icons.work_outline, 'فرص العمل',
+                onTap: () {
+                  Get.to(() =>  JobsPage());
+                }
+                
+                ),
+                  _buildMenuItem(Icons.book, 'الكتب الخاصة بي ',
+                onTap: () {
+                  Get.to(() => My_books());
+                }
+                
+                ),
                 _buildMenuItem(Icons.assignment, 'طلبات التوظيف'),
+                
                 _buildMenuItem(Icons.person, 'الملف الشخصي'),
                 _buildMenuItem(Icons.settings, 'الإعدادات'),
                 _buildMenuItem(Icons.notifications, 'الإشعارات'),

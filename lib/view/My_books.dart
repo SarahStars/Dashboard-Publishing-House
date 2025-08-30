@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:publishing_house/view/PublishABook.dart';
+import 'package:publishing_house/view/home_page.dart';
 
-class PublishedBooksPage extends StatelessWidget {
-  const PublishedBooksPage({super.key});
+
+class My_books extends StatelessWidget {
+  const My_books({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class PublishedBooksPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'التصنيفات والكتب',
+                      ' الكتب الخاصة بي  ' ,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -149,7 +150,11 @@ class PublishedBooksPage extends StatelessWidget {
               children: [
                 Image.asset('images/Frame.png', height: 50),
                 const SizedBox(height: 40),
-                _buildMenuItem(Icons.home, 'الرئيسية'),
+                _buildMenuItem(Icons.home, 'الرئيسية',
+                onTap: () {
+                  Get.to(() => const HomePage());
+                }
+                ),
                 _buildMenuItem(Icons.menu_book, 'الكتب المنشورة'),
                 _buildMenuItem(
                   Icons.upload,
