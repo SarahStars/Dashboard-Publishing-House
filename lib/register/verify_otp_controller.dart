@@ -14,11 +14,6 @@ class VerifyOtpController extends GetxController {
     super.onInit();
     controllers = List.generate(codeLength, (_) => TextEditingController());
     focusNodes = List.generate(codeLength, (_) => FocusNode());
-    @override
-  void onReady() {
-    super.onReady();
-    focusNodes[0].requestFocus();
-  }
   }
 
   @override

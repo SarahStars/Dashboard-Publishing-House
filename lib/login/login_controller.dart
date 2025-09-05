@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:publishing_house/utils/validation.dart';
 import 'package:publishing_house/constants/linkapi.dart';
-import 'package:publishing_house/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {

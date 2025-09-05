@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:publishing_house/view/JobsPage.dart';
-import 'package:publishing_house/view/My_books.dart';
-import 'package:publishing_house/view/home_page.dart';
-import 'package:publishing_house/view/forgot_password.dart';
-import 'package:publishing_house/view/PublishBookPage.dart';
-import 'package:publishing_house/view/register_binding.dart';
-import 'package:publishing_house/view/login_binding.dart';
-import 'package:publishing_house/view/reset_password_page.dart';
-import 'package:publishing_house/view/register_screen.dart';
-import 'package:publishing_house/view/verify_code_screen.dart';
-import 'package:publishing_house/view/request_sent_screen.dart';
-import 'package:publishing_house/view/login_screen.dart';
+import 'package:publishing_house/register/register_binding.dart';
+import 'package:publishing_house/jobs/AddJobPage.dart';
+import 'package:publishing_house/jobs/JobApplicationsPage.dart';
+import 'package:publishing_house/jobs/JobsPage.dart';
+import 'package:publishing_house/book/My_books.dart';
+import 'package:publishing_house/home/home_page.dart';
+import 'package:publishing_house/repaas/forgot_password.dart';
+import 'package:publishing_house/book/PublishBookPage.dart';
+import 'package:publishing_house/login/login_binding.dart';
+//import 'package:publishing_house/repaas/reset_password_page.dart';
+import 'package:publishing_house/register/register_screen.dart';
+import 'package:publishing_house/register/verify_code_screen.dart';
+import 'package:publishing_house/register/request_sent_screen.dart';
+import 'package:publishing_house/login/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:publishing_house/view/verify_code_binding.dart';
+import 'package:publishing_house/register/verify_code_binding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Cairo',
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
+      initialRoute: '/register',
       getPages: [
         GetPage(name: '/request-sent', page: () => const RequestSentScreen()),
         GetPage(name: '/register', page: () => const RegisterScreen(),binding: RegisterBinding(),),
@@ -50,6 +52,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/lates', page: () => const PublishBookPage()),
         GetPage(name: '/jobs', page: () =>  JobsPage()),
         GetPage(name: '/my_books', page: () => const  My_books()),
+        GetPage(name: '/add-job', page: () => AddJobPage()),
+        GetPage(name: '/job-applications', page: () => const JobApplicationsPage()),
+       // GetPage(name: '/reset-password', page: () => const ResetPasswordPage()),
+
+      
 
 
       ],

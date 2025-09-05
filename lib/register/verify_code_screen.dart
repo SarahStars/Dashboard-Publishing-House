@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:publishing_house/controller/verify_otp_controller.dart';
+import 'package:publishing_house/register/verify_otp_controller.dart';
 
 class VerifyCodeScreen extends GetView<VerifyOtpController> {
   const VerifyCodeScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:publishing_house/controller/login_controller.dart';
+import 'package:publishing_house/login/login_controller.dart';
 
 
 class LoginView extends GetView<LoginController> {
@@ -74,28 +74,35 @@ class LoginView extends GetView<LoginController> {
                             ),
                           )),
                       const SizedBox(height: 16),
-                      Center(
-                        child: GestureDetector(
-                          onTap: controller.goToRegister,
-                          child: RichText(
-                            textDirection: TextDirection.rtl,
-                            text: const TextSpan(
-                              style: TextStyle(color: Colors.black54, fontSize: 13),
-                              children: [
-                                TextSpan(text: 'ليس لديك حساب؟ '),
-                                TextSpan(
-                                  text: 'إنشاء حساب',
-                                  style: TextStyle(
-                                    color: Color(0xFF1D2A45),
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+         Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  textDirection: TextDirection.rtl,
+  children: [
+    const Text(
+      'ليس لديك حساب؟ ',
+      style: TextStyle(color: Colors.black54, fontSize: 13),
+    ),
+    TextButton(
+      onPressed: controller.goToRegister,
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero,
+        minimumSize: Size(0, 0),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: const Text(
+        'إنشاء حساب',
+        style: TextStyle(
+          color: Color(0xFF1D2A45),
+          fontSize: 16, // أكبر
+          fontWeight: FontWeight.bold,
+          decoration: TextDecoration.underline,
+        ),
+      ),
+    ),
+  ],
+)
+
+
                     ],
                   ),
                 ),

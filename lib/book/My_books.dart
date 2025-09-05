@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:publishing_house/view/PublishABook.dart';
+import 'package:publishing_house/jobs/JobApplicationsPage.dart';
+import 'package:publishing_house/jobs/JobsPage.dart';
+import 'package:publishing_house/book/PublishBookPage.dart';
+import 'package:publishing_house/book/PublishedBooksPage.dart';
+import 'package:publishing_house/home/home_page.dart';
 
-class PublishedBooksPage extends StatelessWidget {
-  const PublishedBooksPage({super.key});
+
+class My_books extends StatelessWidget {
+  const My_books({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +79,7 @@ class PublishedBooksPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                      'التصنيفات والكتب',
+                      ' الكتب الخاصة بي  ' ,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -149,22 +154,17 @@ class PublishedBooksPage extends StatelessWidget {
               children: [
                 Image.asset('images/Frame.png', height: 50),
                 const SizedBox(height: 40),
-                _buildMenuItem(Icons.home, 'الرئيسية'),
-                _buildMenuItem(Icons.menu_book, 'الكتب المنشورة'),
-                _buildMenuItem(
-                  Icons.upload,
-                  'نشر كتاب',
-                  onTap: () {
-                   // Get.to(() => const PublishABook());
-                  },
-                ),
-                _buildMenuItem(Icons.work_outline, 'فرص العمل'),
-                _buildMenuItem(Icons.assignment, 'طلبات التوظيف'),
+              _buildMenuItem(Icons.home, 'الرئيسية',onTap: () {Get.to(() => const HomePage());},),
+                _buildMenuItem(Icons.menu_book, 'الكتب المنشورة', onTap: () {Get.to(() => const PublishedBooksPage());}),
+                _buildMenuItem(Icons.upload, 'نشر كتاب', onTap: () {Get.to(() => const PublishBookPage());}),
+                _buildMenuItem(Icons.work_outline, 'فرص العمل',onTap: () {Get.to(() =>  JobsPage());}),
+                _buildMenuItem(Icons.book, 'الكتب الخاصة بي ',onTap: () { Get.to(() => My_books()); }),
+                _buildMenuItem(Icons.assignment, 'طلبات التوظيف',onTap: () {Get.to(() => JobApplicationsPage());}),
                 _buildMenuItem(Icons.person, 'الملف الشخصي'),
                 _buildMenuItem(Icons.settings, 'الإعدادات'),
                 _buildMenuItem(Icons.notifications, 'الإشعارات'),
                 const Spacer(),
-                _buildMenuItem(Icons.logout, 'تسجيل الخروج'),
+                _buildMenuItem(Icons.logout,'تسجيل الخروج',),
               ],
             ),
           ),

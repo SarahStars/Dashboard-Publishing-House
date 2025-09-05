@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:publishing_house/controller/register_controller.dart';
+import 'package:publishing_house/register/register_controller.dart';
 import '../utils/validation.dart';
 
 class RegisterScreen extends GetView<RegisterController> {
